@@ -23,13 +23,30 @@ const textureLoader = new THREE.TextureLoader()
 /**
  * House
  */
+const house =new THREE.Group()
+scene.add(house)
+
+//walls
+const walls = new THREE.Mesh(new THREE.BoxBufferGeometry(3,2,4),new THREE.MeshStandardMaterial({color:'red'}))
+walls.position.y=1
+house.add(walls)
 // Temporary sphere
-const sphere = new THREE.Mesh(
+/*const sphere = new THREE.Mesh(
     new THREE.SphereBufferGeometry(1, 32, 32),
     new THREE.MeshStandardMaterial({ roughness: 0.7 })
 )
 sphere.position.y = 1
-scene.add(sphere)
+scene.add(sphere)*/
+//Roof
+const roof = new THREE.Mesh(new THREE.ConeGeometry(3,1,4),new THREE.MeshStandardMaterial({color:'green'}))
+roof.position.y=2.5
+roof.rotation.y=Math.PI*.25
+house.add(roof)
+
+const door=new THREE.Mesh(new THREE.PlaneBufferGeometry(1,1.5),new THREE.MeshStandardMaterial({color:'blue'}))
+door.position.z=2+.005
+door.position.y=1-.3
+house.add(door)
 
 // Floor
 const floor = new THREE.Mesh(
