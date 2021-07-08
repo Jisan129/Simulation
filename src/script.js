@@ -50,12 +50,36 @@ house.add(door)
 
 // Floor
 const floor = new THREE.Mesh(
-    new THREE.PlaneBufferGeometry(20, 20),
+    new THREE.PlaneBufferGeometry(30, 30),
     new THREE.MeshStandardMaterial({ color: '#a9c388' })
 )
 floor.rotation.x = - Math.PI * 0.5
 floor.position.y = 0
 scene.add(floor)
+
+//bushes
+const bush_jhar=[]
+const bushesGeometry = new THREE.SphereBufferGeometry(.5,32,32)
+const bushesMaterial = new THREE.MeshStandardMaterial({color: 'yellow'})
+const bush1=new THREE.Mesh(bushesGeometry,bushesMaterial)
+const bush2=new THREE.Mesh(bushesGeometry,bushesMaterial)
+bush1.position.set(2,.2,.2)
+bush1.scale.set(1,1,1)
+bush2.position.set(2,.2,1)
+bush2.scale.set(.5,.5,.5)
+scene.add(bush2)
+scene.add(bush1)
+for (let i = 0; i < 10; i++) {
+    bush_jhar[i]=new THREE.Mesh(bushesGeometry,bushesMaterial)
+    const  angle=Math.random()*Math.PI*3-2
+    const distortion=Math.random()*2+1
+    const x=Math.sin(angle)*4*distortion
+    const z=Math.cos(angle)*4*distortion
+    bush_jhar[i].position.set(x,0,z)
+    scene.add(bush_jhar[i])
+
+}
+
 
 /**
  * Lights
@@ -64,7 +88,7 @@ scene.add(floor)
 const ambientLight = new THREE.AmbientLight('#ffffff', 0.5)
 gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001)
 scene.add(ambientLight)
-
+//c
 // Directional light
 const moonLight = new THREE.DirectionalLight('#ffffff', 0.5)
 moonLight.position.set(4, 5, - 2)
@@ -73,6 +97,9 @@ gui.add(moonLight.position, 'x').min(- 5).max(5).step(0.001)
 gui.add(moonLight.position, 'y').min(- 5).max(5).step(0.001)
 gui.add(moonLight.position, 'z').min(- 5).max(5).step(0.001)
 scene.add(moonLight)
+
+const axisHelper = new THREE.AxesHelper(5)
+scene.add(axisHelper)
 
 /**
  * Sizes
