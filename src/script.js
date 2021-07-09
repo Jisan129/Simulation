@@ -19,6 +19,14 @@ const scene = new THREE.Scene()
  * Textures
  */
 const textureLoader = new THREE.TextureLoader()
+// Floor
+const floor = new THREE.Mesh(
+    new THREE.PlaneBufferGeometry(30, 30),
+    new THREE.MeshStandardMaterial({ color: '#a9c388' })
+)
+floor.rotation.x = - Math.PI * 0.5
+floor.position.y = 0
+scene.add(floor)
 
 /**
  * House
@@ -30,13 +38,7 @@ scene.add(house)
 const walls = new THREE.Mesh(new THREE.BoxBufferGeometry(3,2,4),new THREE.MeshStandardMaterial({color:'red'}))
 walls.position.y=1
 house.add(walls)
-// Temporary sphere
-/*const sphere = new THREE.Mesh(
-    new THREE.SphereBufferGeometry(1, 32, 32),
-    new THREE.MeshStandardMaterial({ roughness: 0.7 })
-)
-sphere.position.y = 1
-scene.add(sphere)*/
+
 //Roof
 const roof = new THREE.Mesh(new THREE.ConeGeometry(3,1,4),new THREE.MeshStandardMaterial({color:'green'}))
 roof.position.y=2.5
@@ -47,20 +49,38 @@ const door=new THREE.Mesh(new THREE.PlaneBufferGeometry(1,1.5),new THREE.MeshSta
 door.position.z=2+.005
 door.position.y=1-.3
 house.add(door)
+house.scale.set(2,2,2)
 
-// Floor
-const floor = new THREE.Mesh(
-    new THREE.PlaneBufferGeometry(30, 30),
-    new THREE.MeshStandardMaterial({ color: '#a9c388' })
-)
-floor.rotation.x = - Math.PI * 0.5
-floor.position.y = 0
-scene.add(floor)
+
+
+
+
+
+const tree=new THREE.Group()
+const body=new THREE.Mesh(new THREE.CylinderBufferGeometry(1,1,10,8),new THREE.MeshBasicMaterial({color:'#4F0E0E'}))
+const leaf=new THREE.Mesh(new THREE.SphereBufferGeometry(4,32,32),new THREE.MeshBasicMaterial({color:'green'}))
+leaf.position.y=10
+body.position.y=5
+tree.add(leaf)
+tree.add(body)
+tree.position.x=12
+tree.scale.set(.5,.5,.5)
+scene.add(tree)
+const tree2=tree.clone();
+tree2.position.x=-12
+scene.add(tree2)
+
+
+
+
+
+
+
 
 //bushes
 const bush_jhar=[]
 const bushesGeometry = new THREE.SphereBufferGeometry(.5,32,32)
-const bushesMaterial = new THREE.MeshStandardMaterial({color: 'yellow'})
+const bushesMaterial = new THREE.MeshStandardMaterial({color: '#4AA96C'})
 const bush1=new THREE.Mesh(bushesGeometry,bushesMaterial)
 const bush2=new THREE.Mesh(bushesGeometry,bushesMaterial)
 bush1.position.set(2,.2,.2)
@@ -75,7 +95,7 @@ for (let i = 0; i < 10; i++) {
     const distortion=Math.random()*2+1
     const x=Math.sin(angle)*4*distortion
     const z=Math.cos(angle)*4*distortion
-    bush_jhar[i].position.set(x,0,z)
+    bush_jhar[i].position.set(x,.2,z)
     scene.add(bush_jhar[i])
 
 }
