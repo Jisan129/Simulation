@@ -153,6 +153,22 @@ for (let i = 0; i <24; i++) {
     }
     scene.add(cylinder_river[i])
 }
+//hills
+const hill_1=new THREE.Mesh(new THREE.ConeGeometry(5,9,10,12,false,4,6.5)
+    ,new THREE.MeshBasicMaterial({color:"#BB8760"}))
+hill_1.position.y=15
+hill_1.position.x=-15
+hill_1.position.z=-25
+hill_1.scale.set(5,5,5)
+scene.add(hill_1)
+
+
+
+
+//cars
+const car=new THREE.Mesh(new THREE.BoxBufferGeometry(6,2,2),new THREE.MeshBasicMaterial({wireframe:true}))
+car.position.set(15,3,35)
+scene.add(car)
 
 
 
@@ -179,7 +195,7 @@ scene.add(ambientLight)
 //c
 // Directional light
 const moonLight = new THREE.DirectionalLight('#b9d5ff', 1)
-moonLight.position.set(4, 5, -2)
+moonLight.position.set(4, 5, 2)
 gui.add(moonLight, 'intensity').min(0).max(1).step(0.001)
 gui.add(moonLight.position, 'x').min(-5).max(5).step(0.001)
 gui.add(moonLight.position, 'y').min(-5).max(5).step(0.001)
@@ -258,7 +274,7 @@ const tick = () => {
         cylinder_river[temp%23].position.y=Math.sin(elapsedTime)*.5
     }
 
-
+    car.position.x=Math.sin(elapsedTime)*15
     /**
      * Animate
      */
