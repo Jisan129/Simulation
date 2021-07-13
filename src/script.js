@@ -166,10 +166,32 @@ scene.add(hill_1)
 
 
 //cars
-const car=new THREE.Mesh(new THREE.BoxBufferGeometry(6,2,2),new THREE.MeshBasicMaterial({wireframe:true}))
-car.position.set(15,3,35)
+const car =new THREE.Group()
 scene.add(car)
+const carBody=new THREE.Mesh(new THREE.BoxBufferGeometry(6,2,2),new THREE.MeshBasicMaterial({color:'red'}))
+carBody.position.set(0,3,35)
+car.add(carBody)
+const wheel =new THREE.Mesh(new THREE.CylinderBufferGeometry(2,2,2),new THREE.MeshBasicMaterial({color:'yellow'}))
+wheel.scale.set(.5,.5,.5)
+wheel.rotation.z=Math.PI * .5
+wheel.rotation.y=Math.PI * .5
+wheel.position.set(1.5,2,36)
+const wheel4=wheel.clone()
+wheel4.position.z=34
+const wheel2 =wheel.clone()
+wheel2.position.x=-1.5
+const wheel3 =wheel2.clone()
+wheel3.position.z=34
+car.add(wheel)
+car.add(wheel3)
+car.add(wheel2)
+car.add(wheel4)
 
+//road
+const road=new THREE.Mesh(new THREE.BoxBufferGeometry(80,.5,5),new THREE.MeshBasicMaterial({color:'yellow'}))
+road.position.z=35
+road.position.x=-2
+scene.add(road)
 
 
 /*const river_1 = new THREE.Mesh(new THREE.BoxBufferGeometry(3, .5, 4), new THREE.MeshStandardMaterial({color:'blue'}))
@@ -274,7 +296,9 @@ const tick = () => {
         cylinder_river[temp%23].position.y=Math.sin(elapsedTime)*.5
     }
 
-    car.position.x=Math.sin(elapsedTime)*15
+
+    car.position.x=Math.sin(elapsedTime)*20
+
     /**
      * Animate
      */
