@@ -2,6 +2,7 @@ import './style.css'
 import * as THREE from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
+import {ShaderLib as moonLightlight} from "three";
 
 /**
  * Base
@@ -29,6 +30,7 @@ const floor = new THREE.Mesh(
     new THREE.PlaneBufferGeometry(80, 80),
     new THREE.MeshStandardMaterial({color: 'green'})
 )
+floor.receiveShadow = true
 floor.rotation.x = -Math.PI * 0.5
 floor.position.y = 0
 scene.add(floor)
@@ -71,7 +73,6 @@ scene.add(tree)
 const tree2 = tree.clone();
 tree2.position.x = -12
 scene.add(tree2)
-
 
 //bushes
 const bush_jhar = []
@@ -127,6 +128,7 @@ wind_component.position.set(-15, 11, 4)
 wind_component.rotation.y = Math.PI * .5
 wind_component.position.z = 15
 wind_component.position.x = -26
+wind_component.castShadow = true
 
 scene.add(wind_component)
 
@@ -134,77 +136,80 @@ scene.add(wind_component)
 const geometry = new THREE.ConeGeometry(5, 20, 32);
 const material = new THREE.MeshBasicMaterial({color: 0xffff00});
 
-//rivers
-const cylinder_1 = new THREE.Mesh(new THREE.CylinderBufferGeometry(5, 5, 10, 50), new THREE.MeshBasicMaterial({color: "blue"}))
-scene.add(cylinder_1)
-cylinder_1.position.x = 35
-cylinder_1.position.y = 0
-cylinder_1.position.z = 16
-cylinder_1.scale.set(.5, .5, .5)
-cylinder_1.rotation.x = Math.PI * .5
-cylinder_1.rotation.z = Math.PI * .5
-const cylinder_river = []
-for (let i = 0; i <24; i++) {
-    cylinder_river[i] = cylinder_1.clone()
-    if (i < 19) {
-        cylinder_river[i].position.z =  i*3-18
-    } else {
-        cylinder_river[i].position.z =  - i*3+35
-    }
+/*
     scene.add(cylinder_river[i])
-}
+*//*function TreePosition(pTree, pTreeBody) {
+    pTree.position.y=20
+    pTree.position.x=30
+    pTree.position.z=30
+    pTreeBody.Position.x=30
+    pTreeBody.Position.y=0
+    pTreeBody.Position.z=30
+
+    scene.add(pTree)
+    scene.add(pTreeBody)
+}*/
+
+// Project Tree
+const pTree=new THREE.Mesh(new THREE.DodecahedronGeometry(3,0),new THREE.MeshBasicMaterial({color:'green'}))
+const pTree2=new THREE.Mesh(new THREE.TetrahedronGeometry(2,1),new THREE.MeshBasicMaterial({color:'green'}))
+const pTreeBody = new THREE.Mesh(new THREE.CylinderBufferGeometry(.5, .5, 10, 8), new THREE.MeshBasicMaterial({color: '#4F0E0E'}))
+
+
+
+pTree.position.y=11
+pTree.position.x=30
+pTree.position.z=30
+pTreeBody.position.x=30
+pTreeBody.position.y=5
+pTreeBody.position.z=30
+
+scene.add(pTree)
+scene.add(pTreeBody)
+/*
+TreePosition(pTree2,pTreebody)
+*/
+
 //hills
-const hill_1=new THREE.Mesh(new THREE.ConeGeometry(5,9,10,12,false,4,6.5)
-    ,new THREE.MeshBasicMaterial({color:"#BB8760"}))
-hill_1.position.y=15
-hill_1.position.x=-15
-hill_1.position.z=-25
-hill_1.scale.set(5,5,5)
+const hill_1 = new THREE.Mesh(new THREE.ConeGeometry(5, 9, 10, 12, false, 4, 6.5)
+    , new THREE.MeshBasicMaterial({color: "#BB8760"}))
+hill_1.position.y = 15
+hill_1.position.x = -15
+hill_1.position.z = -25
+hill_1.scale.set(5, 5, 5)
 scene.add(hill_1)
 
 
-
-
 //cars
-const car =new THREE.Group()
+const car = new THREE.Group()
 scene.add(car)
-const carBody=new THREE.Mesh(new THREE.BoxBufferGeometry(6,2,2),new THREE.MeshBasicMaterial({color:'red'}))
-carBody.position.set(0,3,35)
+const carBody = new THREE.Mesh(new THREE.BoxBufferGeometry(6, 2, 2), new THREE.MeshBasicMaterial({color: 'red'}))
+carBody.position.set(0, 3, 35)
 car.add(carBody)
-const wheel =new THREE.Mesh(new THREE.CylinderBufferGeometry(2,2,2),new THREE.MeshBasicMaterial({color:'yellow'}))
-wheel.scale.set(.5,.5,.5)
-wheel.rotation.z=Math.PI * .5
-wheel.rotation.y=Math.PI * .5
-wheel.position.set(1.5,2,36)
-const wheel4=wheel.clone()
-wheel4.position.z=34
-const wheel2 =wheel.clone()
-wheel2.position.x=-1.5
-const wheel3 =wheel2.clone()
-wheel3.position.z=34
+const wheel = new THREE.Mesh(new THREE.CylinderBufferGeometry(2, 2, 2), new THREE.MeshBasicMaterial({color: '#2C2E43'}))
+wheel.scale.set(.5, .5, .5)
+wheel.rotation.z = Math.PI * .5
+wheel.rotation.y = Math.PI * .5
+wheel.position.set(1.5, 2, 36)
+const wheel4 = wheel.clone()
+wheel4.position.z = 34
+const wheel2 = wheel.clone()
+wheel2.position.x = -1.5
+const wheel3 = wheel2.clone()
+wheel3.position.z = 34
 car.add(wheel)
 car.add(wheel3)
 car.add(wheel2)
 car.add(wheel4)
+car.position.y = -1
 
 //road
-const road=new THREE.Mesh(new THREE.BoxBufferGeometry(80,.5,5),new THREE.MeshBasicMaterial({color:'yellow'}))
-road.position.z=35
-road.position.x=-2
+const road = new THREE.Mesh(new THREE.BoxBufferGeometry(78, .5, 5), new THREE.MeshBasicMaterial({color: '#F1ECC3'}))
+road.position.z = 35
+road.position.x = -4
 scene.add(road)
 
 
-/*const river_1 = new THREE.Mesh(new THREE.BoxBufferGeometry(3, .5, 4), new THREE.MeshStandardMaterial({color:'blue'}))
-river_1.position.set(34,0,6)
-river_1.scale.set(4,.5,4)
-const river_2=river_1.clone()
-river_2.position.z=12
-scene.add(river_1)
-scene.add(river_2)*/
-
-
-/*cylinder_1.rotation.y=-1*Math.PI*.5
-cylinder_1.rotation.x=Math.PI*.5*/
 
 
 /**
@@ -213,7 +218,9 @@ cylinder_1.rotation.x=Math.PI*.5*/
 // Ambient light
 const ambientLight = new THREE.AmbientLight('#b9d5ff', 0.3)
 gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001)
+
 scene.add(ambientLight)
+
 //c
 // Directional light
 const moonLight = new THREE.DirectionalLight('#b9d5ff', 1)
@@ -222,6 +229,12 @@ gui.add(moonLight, 'intensity').min(0).max(1).step(0.001)
 gui.add(moonLight.position, 'x').min(-5).max(5).step(0.001)
 gui.add(moonLight.position, 'y').min(-5).max(5).step(0.001)
 gui.add(moonLight.position, 'z').min(-5).max(5).step(0.001)
+moonLight.shadow.mapSize.width = 512; // default
+moonLight.shadow.mapSize.height = 512; // default
+moonLight.shadow.camera.near = 0.5; // default
+moonLight.shadow.camera.far = 500; // default
+
+moonLight.castShadow = true
 scene.add(moonLight)
 
 const doorLight = new THREE.PointLight('red', 10, 9)
@@ -262,6 +275,8 @@ camera.position.y = 2
 camera.position.z = 5
 scene.add(camera)
 
+
+
 // Controls
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
@@ -273,14 +288,17 @@ const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 })
 renderer.setSize(sizes.width, sizes.height)
-renderer.setClearColor('#B5EAEA',1)
+renderer.setClearColor('#B5EAEA', 1)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+renderer.shadowMap.enabled = true
+renderer.shadowMap.type = THREE.PCFShadowMap;
 
 
 const clock = new THREE.Clock()
 let temp = 0;
-let count=0;
-let current=0
+let count = 0;
+let current = 0
+let number=0
 const tick = () => {
     const elapsedTime = Math.ceil(clock.getElapsedTime())
 
@@ -290,21 +308,10 @@ const tick = () => {
             tree.scale.set(1.1, 1.1, 1.1)
         }
     }
-    if(Math.floor(elapsedTime)-temp>0){
-        temp=Math.floor(elapsedTime)
-
-        cylinder_river[temp%23].position.y=Math.sin(elapsedTime)*.5
-    }
 
 
-    car.position.x=Math.sin(elapsedTime)*20
+    car.position.x = Math.sin(elapsedTime) * 20
 
-    /**
-     * Animate
-     */
-
-
-    // Update controls
     controls.update()
 
     // Render
