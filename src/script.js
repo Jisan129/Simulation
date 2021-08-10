@@ -2,7 +2,11 @@ import './style.css'
 import * as THREE from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
-import {ShaderLib as moonLightlight} from "three";
+import { ShaderLib as moonLightlight} from "three";
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
+import {OBJLoader} from "three/examples/jsm/loaders/OBJLoader";
+import {MTLLoader} from "three/examples/jsm/loaders/MTLLoader";
+
 
 /**
  * Base
@@ -38,9 +42,29 @@ scene.add(floor)
 /**
  * House
  */
+console.log("No")
+const loader=new GLTFLoader()
+loader.load('/models/Fox/glTF/Fox.gltf',(gltf)=>{
+    console.log(gltf)
+    gltf.scene.children[0].scale.set(.25,.25,.25)
+    //scene.add(gltf.scene.children[0])
+})
+
+
+const objLoader=new OBJLoader()
+const mtlLoader=new MTLLoader()
+mtlLoader.load('/models/Tree/tree_texture.mtl',(mtl)=>{
+    mtl.preload();
+    objLoader.setMaterials(mtl)
+    objLoader.load('/models/Tree/tree.obj',(root)=>{
+        scene.add(root)
+    })
+})
 
 const house = new THREE.Group()
+/*
 scene.add(house)
+*/
 
 //walls
 const walls = new THREE.Mesh(new THREE.BoxBufferGeometry(3, 2, 4), new THREE.MeshStandardMaterial({map: brickText}))
@@ -69,10 +93,10 @@ tree.add(leaf)
 tree.add(body)
 tree.position.x = 12
 tree.scale.set(1, 1, 1)
-scene.add(tree)
+//scene.add(tree)
 const tree2 = tree.clone();
 tree2.position.x = -12
-scene.add(tree2)
+//scene.add(tree2)
 
 //bushes
 const bush_jhar = []
@@ -84,8 +108,8 @@ bush1.position.set(2, .2, .2)
 bush1.scale.set(1, 1, 1)
 bush2.position.set(2, .2, 1)
 bush2.scale.set(.5, .5, .5)
-scene.add(bush2)
-scene.add(bush1)
+//scene.add(bush2)
+//scene.add(bush1)
 for (let i = 0; i < 10; i++) {
     bush_jhar[i] = new THREE.Mesh(bushesGeometry, bushesMaterial)
     const angle = Math.random() * Math.PI * 3 - 2
@@ -94,7 +118,7 @@ for (let i = 0; i < 10; i++) {
     const z = Math.cos(angle) * 4 * distortion
     bush_jhar[i].position.set(x * 2, .2, z * 2)
     bush_jhar[i].scale.set(4, 4, 4)
-    scene.add(bush_jhar[i])
+    //scene.add(bush_jhar[i])
 
 }
 
@@ -154,18 +178,32 @@ const material = new THREE.MeshBasicMaterial({color: 0xffff00});
 const pTree=new THREE.Mesh(new THREE.DodecahedronGeometry(3,0),new THREE.MeshBasicMaterial({color:'green'}))
 const pTree2=new THREE.Mesh(new THREE.TetrahedronGeometry(2,1),new THREE.MeshBasicMaterial({color:'green'}))
 const pTreeBody = new THREE.Mesh(new THREE.CylinderBufferGeometry(.5, .5, 10, 8), new THREE.MeshBasicMaterial({color: '#4F0E0E'}))
-
-
+const pTreeBody2 = new THREE.Mesh(new THREE.CylinderBufferGeometry(.2,.5,10,8),new THREE.MeshBasicMaterial({color: '#4F0E0E'}))
+const pTreeBranch=new THREE.Mesh(new THREE.CylinderBufferGeometry(.08,.1,2,8),new THREE.MeshBasicMaterial({color:'#4F0E0E'}))
 
 pTree.position.y=11
 pTree.position.x=30
 pTree.position.z=30
+pTree2.position.y=11
+pTree2.position.x=25
+pTree2.position.z=30
 pTreeBody.position.x=30
 pTreeBody.position.y=5
 pTreeBody.position.z=30
+pTreeBody2.position.x=24
+pTreeBody2.position.y=5
+pTreeBody2.position.z=30
+pTreeBranch.position.x=23.2
+pTreeBranch.position.y=10
+pTreeBranch.position.z=30
+pTreeBranch.rotation.z=.7
+
+scene.add(pTreeBody2)
 
 scene.add(pTree)
 scene.add(pTreeBody)
+scene.add(pTreeBranch)
+scene.add(pTree2)
 /*
 TreePosition(pTree2,pTreebody)
 */
@@ -177,12 +215,12 @@ hill_1.position.y = 15
 hill_1.position.x = -15
 hill_1.position.z = -25
 hill_1.scale.set(5, 5, 5)
-scene.add(hill_1)
+//scene.add(hill_1)
 
 
 //cars
 const car = new THREE.Group()
-scene.add(car)
+//scene.add(car)
 const carBody = new THREE.Mesh(new THREE.BoxBufferGeometry(6, 2, 2), new THREE.MeshBasicMaterial({color: 'red'}))
 carBody.position.set(0, 3, 35)
 car.add(carBody)
@@ -207,7 +245,7 @@ car.position.y = -1
 const road = new THREE.Mesh(new THREE.BoxBufferGeometry(78, .5, 5), new THREE.MeshBasicMaterial({color: '#F1ECC3'}))
 road.position.z = 35
 road.position.x = -4
-scene.add(road)
+//scene.add(road)
 
 
 
